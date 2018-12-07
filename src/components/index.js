@@ -1,4 +1,5 @@
-import Footer from "./Footer/Footer";
+import Exercises from "./Exercises/Exercises";
+import Navigation from "./Navigation/Navigation";
 import Header from "./Header/Header";
 
-export { Footer, Header };
+export { Exercises, Navigation, Header };

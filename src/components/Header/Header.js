@@ -6,21 +6,13 @@ export default class Header extends Component {
   render() {
     return (
       <Fragment>
-        {/* <AppBar>
+        <AppBar position="static">
           <Toolbar>
-            <Typography variant="headline" color="inherit">
-              Test
+            <Typography variant="h5" color="inherit">
+              Exercise Database
             </Typography>
           </Toolbar>
-        </AppBar> */}
-
-        <Paper>
-          <Tabs value={0} indicatorColor="primary" textColor="primary" centered>
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" />
-          </Tabs>
-        </Paper>
+        </AppBar>
       </Fragment>
     );
   }
