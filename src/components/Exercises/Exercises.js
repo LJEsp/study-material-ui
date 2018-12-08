@@ -5,8 +5,11 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton
 } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -30,7 +33,8 @@ class Exercises extends Component {
         id,
         title = "Welcome!",
         description = "Please select an exercise from the list on the left."
-      }
+      },
+      onDelete
     } = this.props;
 
     return (
@@ -54,6 +58,12 @@ class Exercises extends Component {
                           primary={title}
                           onClick={() => onSelect(id)}
                         />
+
+                        <ListItemSecondaryAction>
+                          <IconButton onClick={() => onDelete(id)}>
+                            <Delete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
                       </ListItem>
                     ))}
                   </List>

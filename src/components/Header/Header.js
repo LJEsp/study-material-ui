@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { AppBar, Toolbar, Typography, Paper, Tabs } from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
-import Create from "../Dialogs/Create/Create";
+import Create from "./Create/Create";
 
 export default class Header extends Component {
   render() {
