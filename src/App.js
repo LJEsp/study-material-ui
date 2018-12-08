@@ -11,7 +11,9 @@ const styles = {};
 
 class App extends Component {
   state = {
-    exercises
+    exercises,
+    category: "",
+    exercise: {}
   };
 
   getExercisesByMuscles() {
@@ -28,18 +30,52 @@ class App extends Component {
     );
   }
 
+  handleCategorySelect = category => {
+    this.setState({
+      category
+    });
+  };
+
+  handleExerciseSelect = id => {
+    this.setState(prevState => ({
+      exercise: prevState.exercises.find(exercise => exercise.id === id)
+    }));
+  };
+
+  handleExerciseCreate = exercise => {
+    this.setState(({ exercises }) => ({
+      exercises: [
+        ...exercises,
+        exercise
+      ]
+    }));
+  };
+
   render() {
     const exercises = this.getExercisesByMuscles();
+    const { category, exercise } = this.state;
 
     const { classes } = this.props;
 
     return (
       <Fragment>
-        <Header />
+        <Header
+          muscles={muscles}
+          onExerciseCreate={this.handleExerciseCreate}
+        />
 
-        <Navigation muscles={muscles} />
+        <Navigation
+          muscles={muscles}
+          onSelect={this.handleCategorySelect}
+          category={category}
+        />
 
-        <Exercises exercises={exercises} />
+        <Exercises
+          exercises={exercises}
+          category={category}
+          onSelect={this.handleExerciseSelect}
+          exercise={exercise}
+        />
       </Fragment>
     );
   }

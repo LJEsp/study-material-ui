@@ -4,15 +4,28 @@ import Tab from "@material-ui/core/Tab";
 
 export default class Navigation extends Component {
   render() {
-    const { muscles } = this.props;
+    const { muscles, onSelect, category } = this.props;
+    const index = category
+      ? muscles.findIndex(muscle => muscle === category) + 1
+      : 0;
+
+    const onIndexSelect = (e, index) => {
+      onSelect(index === 0 ? "" : muscles[index - 1]);
+    };
 
     return (
       <Paper>
-        <Tabs value={0} indicatorColor="primary" textColor="primary" centered>
+        <Tabs
+          value={index}
+          onChange={onIndexSelect}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
           <Tab label="All" />
 
-          {muscles.map((muscle, index) => (
-            <Tab key={index} label={muscle} />
+          {muscles.map(muscle => (
+            <Tab key={muscle} label={muscle} />
           ))}
         </Tabs>
       </Paper>

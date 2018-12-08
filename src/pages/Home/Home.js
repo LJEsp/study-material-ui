@@ -21,4 +21,4 @@ class Home extends Component {
   }
 }
 
-export default withStyles()(Home);
+export default withStyles({})(Home);

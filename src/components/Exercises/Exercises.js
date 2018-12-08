@@ -21,42 +21,53 @@ const styles = {
 
 class Exercises extends Component {
   render() {
-    const { classes, exercises } = this.props;
-
-    console.log(exercises);
+    const {
+      classes,
+      exercises,
+      category,
+      onSelect,
+      exercise: {
+        id,
+        title = "Welcome!",
+        description = "Please select an exercise from the list on the left."
+      }
+    } = this.props;
 
     return (
       <Grid container spacing={8}>
         <Grid item sm>
           <Paper className={classes.paper}>
-            {exercises.map(([group, exercises], index) => (
-              <Fragment key={index}>
-                <Typography
-                  variant="h5"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  {group}
-                </Typography>
+            {exercises.map(([group, exercises]) =>
+              !category || category === group ? (
+                <Fragment key={group}>
+                  <Typography
+                    variant="h5"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {group}
+                  </Typography>
 
-                <List component="ul">
-                  {exercises.map(({ title }, index) => (
-                    <ListItem key={index} button>
-                      <ListItemText primary={title} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Fragment>
-            ))}
+                  <List component="ul">
+                    {exercises.map(({ title, id }) => (
+                      <ListItem key={id} button>
+                        <ListItemText
+                          primary={title}
+                          onClick={() => onSelect(id)}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Fragment>
+              ) : null
+            )}
           </Paper>
         </Grid>
 
         <Grid item sm>
           <Paper className={classes.paper}>
-            <Typography variant="h4">Welcome!</Typography>
+            <Typography variant="h4">{title}</Typography>
 
-            <Typography variant="body1">
-              Please select an exercise from the list on the left.
-            </Typography>
+            <Typography variant="body1">{description}</Typography>
           </Paper>
         </Grid>
       </Grid>
