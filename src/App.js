@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Grid, Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 import { muscles, exercises } from "./store.js";
 
 import { Exercises, Navigation, Header } from "./components";
-import { Home } from "./pages";
 
 const styles = {};
 
@@ -13,7 +11,8 @@ class App extends Component {
   state = {
     exercises,
     category: "",
-    exercise: {}
+    exercise: {},
+    editMode: false
   };
 
   getExercisesByMuscles() {
@@ -24,8 +23,6 @@ class App extends Component {
       }),
       {}
     );
-
-    console.log(muscles, initExercises);
 
     return Object.entries(
       this.state.exercises.reduce((exercises, exercise) => {
@@ -46,7 +43,8 @@ class App extends Component {
 
   handleExerciseSelect = id => {
     this.setState(prevState => ({
-      exercise: prevState.exercises.find(exercise => exercise.id === id)
+      exercise: prevState.exercises.find(exercise => exercise.id === id),
+      editMode: false
     }));
   };
 
@@ -58,15 +56,29 @@ class App extends Component {
 
   handleExerciseDelete = id => {
     this.setState(({ exercises }) => ({
-      exercises: exercises.filter(exercise => exercise.id !== id)
+      exercises: exercises.filter(exercise => exercise.id !== id),
+      editMode: false,
+      exercise: {}
     }));
   };
 
-  handle;
+  handleExerciseSelectEdit = id => {
+    this.setState(prevState => ({
+      exercise: prevState.exercises.find(exercise => exercise.id === id),
+      editMode: true
+    }));
+  };
+
+  handleExerciseEdit = exercise => {
+    this.setState(({ exercises }) => ({
+      exercises: [...exercises.filter(ex => ex.id !== exercise.id), exercise],
+      exercise
+    }));
+  };
 
   render() {
     const exercises = this.getExercisesByMuscles();
-    const { category, exercise } = this.state;
+    const { category, exercise, editMode } = this.state;
 
     const { classes } = this.props;
 
@@ -89,6 +101,10 @@ class App extends Component {
           onSelect={this.handleExerciseSelect}
           exercise={exercise}
           onDelete={this.handleExerciseDelete}
+          onSelectEdit={this.handleExerciseSelectEdit}
+          editMode={editMode}
+          muscles={muscles}
+          onEdit={this.handleExerciseEdit}
         />
       </Fragment>
     );

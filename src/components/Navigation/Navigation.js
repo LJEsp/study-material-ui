@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AppBar, Toolbar, Typography, Paper, Tabs } from "@material-ui/core";
+import { Paper, Tabs } from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
 
 export default class Navigation extends Component {

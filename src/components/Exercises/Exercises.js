@@ -9,14 +9,15 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
-
+import { Delete, Edit } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
+
+import Form from "../Form/Form";
 
 const styles = {
   paper: {
     padding: 20,
-    margin: 10,
+    margin: 5,
     height: 500,
     overflowY: "auto"
   }
@@ -34,11 +35,16 @@ class Exercises extends Component {
         title = "Welcome!",
         description = "Please select an exercise from the list on the left."
       },
-      onDelete
+      onDelete,
+      onSelectEdit,
+      editMode,
+      onEdit,
+      muscles,
+      exercise
     } = this.props;
 
     return (
-      <Grid container spacing={8}>
+      <Grid container spacing={0}>
         <Grid item sm>
           <Paper className={classes.paper}>
             {exercises.map(([group, exercises]) =>
@@ -60,6 +66,10 @@ class Exercises extends Component {
                         />
 
                         <ListItemSecondaryAction>
+                          <IconButton onClick={() => onSelectEdit(id)}>
+                            <Edit />
+                          </IconButton>
+
                           <IconButton onClick={() => onDelete(id)}>
                             <Delete />
                           </IconButton>
@@ -75,9 +85,15 @@ class Exercises extends Component {
 
         <Grid item sm>
           <Paper className={classes.paper}>
-            <Typography variant="h4">{title}</Typography>
+            {editMode ? (
+              <Form exercise={exercise} muscles={muscles} onSubmit={onEdit} />
+            ) : (
+              <Fragment>
+                <Typography variant="h4">{title}</Typography>
 
-            <Typography variant="body1">{description}</Typography>
+                <Typography variant="body1">{description}</Typography>
+              </Fragment>
+            )}
           </Paper>
         </Grid>
       </Grid>

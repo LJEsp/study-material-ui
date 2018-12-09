@@ -1,35 +1,17 @@
 import React, { Component, Fragment } from "react";
 import {
   Fab,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  TextField,
-  FormControl,
-  MenuItem,
-  Select,
-  InputLabel
+  DialogTitle
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = theme => ({
-  formControl: {
-    width: 500
-  }
-});
+import Form from "../../Form/Form";
 
 class Create extends Component {
   state = {
-    open: false,
-    exercise: {
-      title: "",
-      description: "",
-      muscles: ""
-    }
+    open: false
   };
 
   handleToggle = () => {
@@ -38,41 +20,13 @@ class Create extends Component {
     });
   };
 
-  handleChange = name => event => {
-    this.setState({
-      exercise: {
-        ...this.state.exercise,
-        [name]: event.target.value
-      }
-    });
-  };
+  handleFormSubmit = exercise => {
+    this.handleToggle();
 
-  handleSubmit = () => {
-    // TODO: validate
-    const { exercise } = this.state;
-
-    this.props.onCreate({
-      ...exercise,
-      id: exercise.title.toLocaleLowerCase().replace(/ /g, "-")
-    });
-
-    this.setState({
-      open: false,
-      exercise: {
-        title: "",
-        description: "",
-        muscles: ""
-      }
-    });
+    this.props.onExerciseCreate(exercise);
   };
 
   render() {
-    const {
-      open,
-      exercise: { title, description, muscles }
-    } = this.state;
-    const { muscles: categories, classes } = this.props;
-
     return (
       <Fragment>
         <Fab color="secondary" size="small" onClick={this.handleToggle}>
@@ -80,67 +34,20 @@ class Create extends Component {
         </Fab>
 
         <Dialog open={this.state.open} onClose={this.handleToggle}>
-          <DialogTitle id="form-dialog-title">
-            Create a New Exercise
-          </DialogTitle>
+          <DialogTitle>Create a New Exercise</DialogTitle>
 
           <DialogContent>
             <DialogContentText>Fill out the form below.</DialogContentText>
 
-            <form>
-              <TextField
-                label="Title"
-                value={title}
-                onChange={this.handleChange("title")}
-                margin="normal"
-                className={classes.formControl}
-              />
-
-              <br />
-
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="muscles">Muscles</InputLabel>
-
-                <Select
-                  value={muscles}
-                  onChange={this.handleChange("muscles")}
-                  // inputProps={}
-                >
-                  {categories.map(category => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <br />
-
-              <TextField
-                label="Description"
-                value={description}
-                onChange={this.handleChange("description")}
-                margin="normal"
-                multiline
-                rows="4"
-                className={classes.formControl}
-              />
-            </form>
+            <Form
+              muscles={this.props.muscles}
+              onSubmit={this.handleFormSubmit}
+            />
           </DialogContent>
-
-          <DialogActions>
-            <Button
-              onClick={this.handleSubmit}
-              color="primary"
-              variant="contained"
-            >
-              Create
-            </Button>
-          </DialogActions>
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default withStyles(styles)(Create);
+export default Create;

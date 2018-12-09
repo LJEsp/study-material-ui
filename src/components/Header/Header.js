@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { AppBar, Toolbar, Typography, Paper, Tabs } from "@material-ui/core";
-import Tab from "@material-ui/core/Tab";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import Create from "./Create/Create";
 
 export default class Header extends Component {
@@ -15,7 +14,7 @@ export default class Header extends Component {
               Exercise Database
             </Typography>
 
-            <Create muscles={muscles} onCreate={onExerciseCreate} />
+            <Create muscles={muscles} onExerciseCreate={onExerciseCreate} />
           </Toolbar>
         </AppBar>
       </Fragment>
