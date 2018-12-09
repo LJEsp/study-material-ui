@@ -3,10 +3,20 @@ import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 import { muscles, exercises } from "./store.js";
 
+import { JssProvider, SheetsRegistry, jss } from "react-jss/";
+
 import { Exercises, Navigation, Header } from "./components";
 
-const styles = {};
+const withJssProvider = Component => props => (
+  <JssProvider registry={new SheetsRegistry()} jss={jss}>
+    <Component {...props} />
+  </JssProvider>
+);
 
+const styles = theme => ({});
+
+// @withJssProvider
+// @withStyles(styles)
 class App extends Component {
   state = {
     exercises,
@@ -55,10 +65,10 @@ class App extends Component {
   };
 
   handleExerciseDelete = id => {
-    this.setState(({ exercises }) => ({
+    this.setState(({ exercises, exercise, editMode }) => ({
       exercises: exercises.filter(exercise => exercise.id !== id),
-      editMode: false,
-      exercise: {}
+      editMode: exercise.id === id ? false : editMode,
+      exercise: exercise.id === id ? {} : exercise
     }));
   };
 
@@ -111,4 +121,4 @@ class App extends Component {
   }
 }
 
-export default withRoot(withStyles(styles)(App));
+export default withJssProvider(withRoot(withStyles(styles)(App)));
