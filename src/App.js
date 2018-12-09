@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import withRoot from "./withRoot";
-import { muscles, exercises } from "./store.js";
-
 import { JssProvider, SheetsRegistry, jss } from "react-jss/";
+
+import withRoot from "./withRoot";
+import { muscles, exercises } from "./store";
+import { Provider } from "./context";
 
 import { Exercises, Navigation, Header } from "./components";
 
@@ -15,8 +16,6 @@ const withJssProvider = Component => props => (
 
 const styles = theme => ({});
 
-// @withJssProvider
-// @withStyles(styles)
 class App extends Component {
   state = {
     exercises,
@@ -86,6 +85,12 @@ class App extends Component {
     }));
   };
 
+  getContext = () => ({
+    muscles,
+    ...this.state,
+    onExerciseCreate: this.handleExerciseCreate
+  });
+
   render() {
     const exercises = this.getExercisesByMuscles();
     const { category, exercise, editMode } = this.state;
@@ -93,30 +98,29 @@ class App extends Component {
     const { classes } = this.props;
 
     return (
-      <Fragment>
-        <Header
-          muscles={muscles}
-          onExerciseCreate={this.handleExerciseCreate}
-        />
+      <Provider value={this.getContext()}>
+        <Fragment>
+          <Header />
 
-        <Navigation
-          muscles={muscles}
-          onSelect={this.handleCategorySelect}
-          category={category}
-        />
+          <Navigation
+            muscles={muscles}
+            onSelect={this.handleCategorySelect}
+            category={category}
+          />
 
-        <Exercises
-          exercises={exercises}
-          category={category}
-          onSelect={this.handleExerciseSelect}
-          exercise={exercise}
-          onDelete={this.handleExerciseDelete}
-          onSelectEdit={this.handleExerciseSelectEdit}
-          editMode={editMode}
-          muscles={muscles}
-          onEdit={this.handleExerciseEdit}
-        />
-      </Fragment>
+          <Exercises
+            exercises={exercises}
+            category={category}
+            onSelect={this.handleExerciseSelect}
+            exercise={exercise}
+            onDelete={this.handleExerciseDelete}
+            onSelectEdit={this.handleExerciseSelectEdit}
+            editMode={editMode}
+            muscles={muscles}
+            onEdit={this.handleExerciseEdit}
+          />
+        </Fragment>
+      </Provider>
     );
   }
 }

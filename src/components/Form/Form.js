@@ -10,11 +10,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({
-  formControl: {
-    width: 300
-  }
-});
+
 
 class Form extends Component {
   state = this.getInitState();
@@ -31,12 +27,6 @@ class Form extends Component {
         };
   }
 
-  componentWillReceiveProps({ exercise }) {
-    this.setState({
-      ...exercise
-    });
-  }
-
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
@@ -50,8 +40,6 @@ class Form extends Component {
       id: this.state.title.toLocaleLowerCase().replace(/ /g, "-"),
       ...this.state
     });
-
-    this.setState(this.getInitState());
   };
 
   render() {
@@ -67,11 +55,12 @@ class Form extends Component {
           onChange={this.handleChange("title")}
           margin="normal"
           className={classes.formControl}
+          fullWidth
         />
 
         <br />
 
-        <FormControl className={classes.formControl}>
+        <FormControl fullWidth>
           <InputLabel htmlFor="muscles">Muscles</InputLabel>
 
           <Select
@@ -96,7 +85,7 @@ class Form extends Component {
           margin="normal"
           multiline
           rows="4"
-          className={classes.formControl}
+          fullWidth
         />
 
         <br />
@@ -104,8 +93,9 @@ class Form extends Component {
         <DialogActions>
           <Button
             onClick={this.handleSubmit}
-            color="primary"
+            color="secondary"
             variant="contained"
+            disabled={!title || !muscles}
           >
             {exercise ? "Edit" : "Create"}
           </Button>
@@ -115,4 +105,4 @@ class Form extends Component {
   }
 }
 
-export default withStyles(styles)(Form);
+export default withStyles({})(Form);

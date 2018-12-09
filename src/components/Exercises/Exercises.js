@@ -14,14 +14,44 @@ import { withStyles } from "@material-ui/core/styles";
 
 import Form from "../Form/Form";
 
-const styles = {
+const styles = theme => ({
   paper: {
-    padding: 20,
-    margin: 5,
-    height: 500,
-    overflowY: "auto"
+    padding: theme.spacing.unit * 3,
+    overflowY: "auto",
+    [theme.breakpoints.up("sm")]: {
+      margin: 10,
+      height: "calc(100% - 20px)"
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "100%"
+    }
+  },
+  paperLeft: {
+    extend: "paper",
+    marginRight: "0 !important"
+  },
+  paperRight: {
+    extend: "paper"
+  },
+  "@global": {
+    "html, body, #root": {
+      height: "100%"
+    }
+  },
+  container: {
+    [theme.breakpoints.up("sm")]: {
+      height: "calc(100% - 64px - 48px)"
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "calc(100% - 56px - 48px)"
+    }
+  },
+  item: {
+    [theme.breakpoints.down("xs")]: {
+      height: "50%"
+    }
   }
-};
+});
 
 class Exercises extends Component {
   render() {
@@ -43,16 +73,19 @@ class Exercises extends Component {
       exercise
     } = this.props;
 
+    console.log(classes);
+
     return (
-      <Grid container spacing={0}>
-        <Grid item sm>
-          <Paper className={classes.paper}>
+      <Grid container spacing={0} className={classes.container}>
+        <Grid item xs={12} sm={6} className={classes.item}>
+          <Paper className={classes.paperLeft}>
             {exercises.map(([group, exercises]) =>
               !category || category === group ? (
                 <Fragment key={group}>
                   <Typography
                     variant="h5"
                     style={{ textTransform: "capitalize" }}
+                    color="primary"
                   >
                     {group}
                   </Typography>
@@ -66,11 +99,17 @@ class Exercises extends Component {
                         />
 
                         <ListItemSecondaryAction>
-                          <IconButton onClick={() => onSelectEdit(id)}>
+                          <IconButton
+                            onClick={() => onSelectEdit(id)}
+                            color="secondary"
+                          >
                             <Edit />
                           </IconButton>
 
-                          <IconButton onClick={() => onDelete(id)}>
+                          <IconButton
+                            onClick={() => onDelete(id)}
+                            color="secondary"
+                          >
                             <Delete />
                           </IconButton>
                         </ListItemSecondaryAction>
@@ -83,14 +122,21 @@ class Exercises extends Component {
           </Paper>
         </Grid>
 
-        <Grid item sm>
+        <Grid item xs={12} sm={6} className={classes.item}>
           <Paper className={classes.paper}>
+            <Typography variant="h4" gutterBottom color="primary">
+              {title}
+            </Typography>
+
             {editMode ? (
-              <Form exercise={exercise} muscles={muscles} onSubmit={onEdit} />
+              <Form
+                key={id}
+                exercise={exercise}
+                muscles={muscles}
+                onSubmit={onEdit}
+              />
             ) : (
               <Fragment>
-                <Typography variant="h4">{title}</Typography>
-
                 <Typography variant="body1">{description}</Typography>
               </Fragment>
             )}

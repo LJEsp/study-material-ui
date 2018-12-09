@@ -1,23 +1,32 @@
 import React, { Component, Fragment } from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import Create from "./Create/Create";
+import { withStyles } from "@material-ui/core/styles";
 
-export default class Header extends Component {
+const styles = {
+  flex: {
+    flex: 1
+  }
+};
+
+class Header extends Component {
   render() {
-    const { muscles, onExerciseCreate } = this.props;
+    const { classes } = this.props;
 
     return (
       <Fragment>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h5" color="inherit" style={{ flex: 1 }}>
+            <Typography variant="h5" color="inherit" className={classes.flex}>
               Exercise Database
             </Typography>
 
-            <Create muscles={muscles} onExerciseCreate={onExerciseCreate} />
+            <Create />
           </Toolbar>
         </AppBar>
       </Fragment>
     );
   }
 }
+
+export default withStyles(styles)(Header);

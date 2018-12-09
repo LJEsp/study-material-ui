@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Paper, Tabs } from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
+import withWidth from "@material-ui/core/withWidth";
 
-export default class Navigation extends Component {
+class Navigation extends Component {
   render() {
-    const { muscles, onSelect, category } = this.props;
+    const { muscles, onSelect, category, width } = this.props;
     const index = category
       ? muscles.findIndex(muscle => muscle === category) + 1
       : 0;
@@ -14,13 +15,15 @@ export default class Navigation extends Component {
     };
 
     return (
-      <Paper>
+      <Paper square={true}>
         <Tabs
           value={index}
           onChange={onIndexSelect}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
+          indicatorColor="secondary"
+          textColor="secondary"
+          centered={width !== "xs"}
+          scrollable={width === "xs"}
+          // scrollButtons="on"
         >
           <Tab label="All" />
 
@@ -32,3 +35,5 @@ export default class Navigation extends Component {
     );
   }
 }
+
+export default withWidth()(Navigation);
